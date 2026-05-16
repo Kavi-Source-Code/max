@@ -1,0 +1,10 @@
+!pkg max
+
+desc "Bourne-Again SHell"
+url "https://ftpmirror.gnu.org/bash/bash-5.3.tar.gz"
+install;
+	silent cmd "./configure"
+	silent cmd "make install"
+	/. done installing. 
+;llatsni
+!end_pkg max
