@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+MAX_VERSION="1.0"
+# max - a package installer.
+error() {
+	local message=$1
+	echo -e "\e[1;91mErr: $message\e[0m" >&2
+	exit 1
+}
+
+spinner() {
+	local stop=$1
+	for char in "⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏" "⠂"; do
+		echo -ne "\r\e[38;5;126m$char\e[0m"
+		((stop--))	
+	done
+}
+
+debug() {
+	local message=$1
+	echo -e "\e[1;35m==> \e[92mDebug: $message\e[0m"
+}
+
+install() {
+	local pkg=$1
+	if curl --output /dev/null --silent --head --fail "https://raw.githubusercontent.com/Kavi-Source-Code/max/HEAD/$pkg.max"; then
+		curl -fsSLO "https://raw.githubusercontent.com/Kavi-Source-Code/max/HEAD/$pkg.max"
+		spinner 10
+	else
+		error "sorry, package does not exist"
+	fi
+}
+cmd=$1
+scmd=$2
+case "$cmd" in 
+	-v|--version) debug "$MAX_VERSION";;
+	install) install $scmd;;
+	*) error "invalid argument: $cmd\nusage: $0 [opt] [pkg]" && exit 1;;
+esac
